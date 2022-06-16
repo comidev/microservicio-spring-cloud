@@ -1,0 +1,12 @@
+[
+    {
+        "name": "mochila",
+        "description": "Mochila mochilera",
+        "stock": 10,
+        "price": 30.25,
+        "categoryName": "Utiles"
+    },
+    {
+        "name": "Utiles"
+    }
+]
