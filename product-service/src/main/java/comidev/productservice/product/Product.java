@@ -11,6 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import comidev.productservice.category.Category;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,5 +38,6 @@ public class Product {
 
     @NotNull(message = "no debe ser vacio")
     @Transient
+    @JsonProperty(access = Access.WRITE_ONLY)
     private String categoryName;
 }
