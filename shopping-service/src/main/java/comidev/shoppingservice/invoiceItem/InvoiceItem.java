@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Positive;
 
+import comidev.shoppingservice.client.product.Product;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,23 +23,12 @@ public class InvoiceItem {
     private Long id;
     @Positive(message = "debe ser mayor a 0 (cero)")
     private Integer quantity;
-    private Float price;
-
     @Column(name = "product_id")
-    private Long productId;
-
+    private String productId;
     @Transient
-    private Float subTotal;
+    private Product product;
 
     public InvoiceItem() {
         this.quantity = 0;
-        this.price = (float) 0;
-    }
-
-    public Float getSubTotal() {
-        if (price > 0 && quantity > 0) {
-            return price * quantity;
-        }
-        return (float) 0;
     }
 }

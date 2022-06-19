@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,7 +45,6 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Customer getById(@PathVariable Long id) {
         return customerService.getById(id);
     }
@@ -65,7 +63,6 @@ public class CustomerController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Customer update(@RequestBody Customer customer,
             @PathVariable Long id) {
         return customerService.update(customer, id);
@@ -73,7 +70,6 @@ public class CustomerController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Customer delete(@PathVariable Long id) {
         return customerService.delete(id);
     }

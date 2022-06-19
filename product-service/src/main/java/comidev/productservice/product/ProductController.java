@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,14 +41,12 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Product getById(@PathVariable String id) {
         return productService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Product create(@RequestBody Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = MessageError.from(bindingResult.getFieldErrors());
@@ -60,14 +57,12 @@ public class ProductController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Product update(@RequestBody Product product, @PathVariable String id) {
         return productService.update(product, id);
     }
 
     @PatchMapping("/{id}/stock")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Product updateStock(@PathVariable String id,
             @RequestParam(name = "quantity", required = true) Integer quantity) {
         return productService.updateStock(id, quantity);
@@ -75,7 +70,6 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public Product delete(@PathVariable String id) {
         return productService.delete(id);
     }

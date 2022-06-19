@@ -9,9 +9,9 @@ import comidev.customerservice.region.Region;
 
 @Repository
 public interface CustomerRepo extends JpaRepository<Customer, Long> {
-    boolean existsByNumberID(String numberID);
+    boolean existsByDni(String dni);
 
-    List<Customer> findByLastName(String lastName);
+    List<Customer> findByName(String name);
 
     List<Customer> findByRegion(Region region);
 
