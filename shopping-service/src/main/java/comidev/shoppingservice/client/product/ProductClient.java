@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 
+// @RequestMapping("/products")
 @FeignClient(name = "product-service", fallback = ProductFallback.class)
-@RequestMapping("/products")
 public interface ProductClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/products/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product getById(@PathVariable String id);
 
-    @PatchMapping("/{id}/stock")
+    @PatchMapping("/products/{id}/stock")
     @ResponseStatus(HttpStatus.OK)
     public Product updateStock(@PathVariable String id,
             @RequestParam(name = "quantity", required = true) Integer quantity);

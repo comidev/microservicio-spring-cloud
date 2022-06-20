@@ -72,6 +72,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                 && authorization.split("\\.").length == 3;
     }
 
-    protected class Config {
+    public static class Config {
     }
 }

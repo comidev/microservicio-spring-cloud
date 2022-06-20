@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import org.springframework.http.HttpStatus;
 
+// @RequestMapping("/users")
 @FeignClient(name = "auth-service", fallback = UserFallback.class)
-@RequestMapping("/users")
 public interface UserClient {
 
-    @PostMapping("/cliente")
+    @PostMapping("/users/cliente")
     @ResponseStatus(HttpStatus.CREATED)
     public User createCliente(@RequestBody User user);
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/users/id/{id}")
     @ResponseStatus(HttpStatus.OK)
     public User getById(@PathVariable Long id);
 }

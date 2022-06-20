@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 
+// @RequestMapping("/customers")
 @FeignClient(name = "customer-service", fallback = CustomerFallback.class)
-@RequestMapping("/customers")
 public interface CustomerClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/customers/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Customer getById(@PathVariable Long id);
 
