@@ -49,14 +49,24 @@ public class UserController {
         return userService.tokenIsValid(token, requestDTO);
     }
 
-    @PostMapping
+    @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserEntity create(@Valid @RequestBody UserEntity user, BindingResult bindingResult) {
+    public UserEntity createAdmin(@Valid @RequestBody UserEntity user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = MessageError.from(bindingResult.getFieldErrors());
             throw new FieldInvalidException(message);
         }
-        return userService.create(user);
+        return userService.createAdmin(user);
+    }
+
+    @PostMapping("/cliente")
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserEntity createCliente(@Valid @RequestBody UserEntity user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = MessageError.from(bindingResult.getFieldErrors());
+            throw new FieldInvalidException(message);
+        }
+        return userService.createCliente(user);
     }
 
     @DeleteMapping("/id/{id}")

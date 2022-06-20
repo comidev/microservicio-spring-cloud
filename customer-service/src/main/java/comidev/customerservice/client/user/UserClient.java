@@ -14,9 +14,9 @@ import org.springframework.http.HttpStatus;
 @RequestMapping("/users")
 public interface UserClient {
 
-    @PostMapping
+    @PostMapping("/cliente")
     @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user);
+    public User createCliente(@RequestBody User user);
 
     @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.OK)

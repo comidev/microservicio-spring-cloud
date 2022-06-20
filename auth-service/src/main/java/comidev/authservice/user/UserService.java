@@ -41,7 +41,7 @@ public class UserService {
         }
 
         UserEntity userEntity = userEntityOpt.get();
-        
+
         String password = userEntity.getPassword();
         if (!passwordEncoder.matches(userRequest.getPassword(), password)) {
             throw new BadRequestException("Password incorrecto");
@@ -74,13 +74,21 @@ public class UserService {
         return new JwtDTO(token, null);
     }
 
-    public UserEntity create(UserEntity user) {
+    public UserEntity createAdmin(UserEntity user) {
+        return create(user, UsuarioRol.ADMIN.toString());
+    }
+
+    public UserEntity createCliente(UserEntity user) {
+        return create(user, UsuarioRol.CLIENTE.toString());
+    }
+
+    private UserEntity create(UserEntity user, String role) {
         String username = user.getUsername();
         if (userRepo.existsByUsername(username)) {
             String message = "Username existente: " + username;
             throw new ConflictException(message);
         }
-        user.getRoles().add(roleRepo.findByName(UsuarioRol.CLIENTE.toString()));
+        user.getRoles().add(roleRepo.findByName(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
     }

@@ -45,7 +45,7 @@ public class CustomerService {
 
         User user = customer.getUser();
         if (user != null) {
-            Long userId = userClient.create(customer.getUser()).getId();
+            Long userId = userClient.createCliente(customer.getUser()).getId();
             customer.setUserId(userId);
         }
         log.info("{} creado!", dni);
@@ -57,7 +57,7 @@ public class CustomerService {
         if (customerDB.getUserId() != null) {
             throw new ConflictException("Ya tiene user!");
         }
-        Long idUser = userClient.create(user).getId();
+        Long idUser = userClient.createCliente(user).getId();
         customerDB.setUserId(idUser);
 
         return customerRepo.save(customerDB);
