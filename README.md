@@ -27,33 +27,33 @@ Puertos
 
 Maneja las entidades Usuario y Rol, sirve para autenticar y autorizar.
 
-Base de datos: PostgreSQL
-Nombre: usersDB
-Puerto: 5432
+-   Base de datos: PostgreSQL
+-   Nombre: usersDB
+-   Puerto: 5432
 
 ### 2. CUSTOMER-SERVICE
 
 Maneja las entidades Customer y Region, sirve para gestionar a los clientes.
 
-Base de datos: Mysql
-Nombre: customersdb
-Puerto: 3306
+-   Base de datos: Mysql
+-   Nombre: customersdb
+-   Puerto: 3306
 
 ### 3. SHOPPING-SERVICE
 
 Maneja las entidades Invoice y InvoiceItem, sirve para gestionar a las compras.
 
-Base de datos: Mysql
-Nombre: shoppingdb
-Puerto: 3306
+-   Base de datos: Mysql
+-   Nombre: shoppingdb
+-   Puerto: 3306
 
 ### 4. PRODUCT-SERVICE
 
 Maneja las entidades Product y Category, sirve para gestionar a los productos.
 
-Base de datos: MongoDB
-Nombre: productsDB
-Puerto: 27017
+-   Base de datos: MongoDB
+-   Nombre: productsDB
+-   Puerto: 27017
 
 ## ORDEN DE EJECUCIÓN
 
@@ -78,9 +78,10 @@ Ruta: /users
 #### Login
 
 Petición:
-Ruta: /login
-Método: POST
-Cuerpo: Usuario
+
+-   Ruta: /login
+-   Método: POST
+-   Cuerpo: Usuario
 
 ```json
 {
