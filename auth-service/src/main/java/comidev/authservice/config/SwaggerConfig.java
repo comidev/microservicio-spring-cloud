@@ -1,42 +1,37 @@
 package comidev.authservice.config;
 
-import java.util.Collections;
-
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
-
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("comidev"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(apiInfo());
+    public GroupedOpenApi publicApi() {
+        return GroupedOpenApi.builder()
+                .group("comidev")
+                .pathsToMatch("comidev")
+                .build();
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfo("Microservicios API",
-                "API Rest de Microservicios con Spring Cloud",
-                "v1",
-                "https://comidev.vercel.app/",
-                new Contact("Omar Miranda",
-                        "https://comidev.vercel.app/",
-                        "comidev.contacto@gmail.com"),
-                "License of API",
-                "API license URL",
-                Collections.emptyList());
+    @Bean
+    public OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Microservicios API")
+                        .description("API Rest de Microservicios con Spring Cloud")
+                        .contact(new Contact()
+                                .name("Omar Miranda")
+                                .email("comidev.contacto@gmail.com")
+                                .url("https://comidev.vercel.app"))
+                        .version("v0.0.1")
+                        .license(new License()
+                                .name("comidev")
+                                .url("https://comidev.vercel.app")));
     }
 }
