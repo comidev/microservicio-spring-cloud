@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import comidev.productservice.category.Category;
 import comidev.productservice.exception.badRequest.FieldInvalidException;
 import comidev.productservice.util.MessageError;
 
@@ -45,13 +46,19 @@ public class ProductController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public Product create(@RequestBody Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = MessageError.from(bindingResult.getFieldErrors());
             throw new FieldInvalidException(message);
         }
         return productService.create(product);
+    }
+
+    @PostMapping("/category")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Category create(@RequestBody Category category) {
+        return productService.createCategory(category.getName());
     }
 
     @PutMapping("/{id}")

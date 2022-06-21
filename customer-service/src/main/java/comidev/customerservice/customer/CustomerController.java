@@ -19,7 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import comidev.customerservice.exception.badRequest.BadRequestException;
 import comidev.customerservice.exception.badRequest.FieldInvalidException;
+import comidev.customerservice.exception.conflict.FieldAlreadyExistException;
+import comidev.customerservice.region.Region;
+import comidev.customerservice.region.RegionRepo;
 import comidev.customerservice.util.MessageError;
 
 @RestController
@@ -28,6 +32,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private RegionRepo regionRepo;
 
     @GetMapping
     public ResponseEntity<List<Customer>> getAllOrByRegion(
@@ -59,6 +66,29 @@ public class CustomerController {
         }
         return customerService.create(customer);
 
+    }
+
+    @PostMapping("/region")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Region createRegion(@RequestBody Region region) {
+        String regionName = region.getName();
+        if (regionName == null || regionName.isEmpty()) {
+            throw new BadRequestException("Nombre no puede ser vacio!");
+        }
+
+        if (regionRepo.existsByName(regionName)) {
+            throw new FieldAlreadyExistException("El nombre ya existe!");
+        }
+
+        return regionRepo.save(region);
+    }
+
+    @GetMapping("/region")
+    public ResponseEntity<List<Region>> getAllRegion() {
+        List<Region> regiones = regionRepo.findAll();
+        return regiones.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(regiones);
     }
 
     @PutMapping("/{id}")

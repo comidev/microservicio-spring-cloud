@@ -1,0 +1,103 @@
+# AUTH-SERVICE --------------------------------------
+# Creamos un user ADMIN
+POST http://localhost:8080/users/admin
+Content-Type: application/json
+{
+    "username" : "admin",
+    "password" : "admin"
+}
+
+
+# Hacemos un login y guardamos los tokens
+POST http://localhost:8080/users/login
+Content-Type: application/json
+{
+    "username" : "admin",
+    "password" : "admin"
+}
+
+# Nota: Debemos colocar el token el AUTHORIZATION
+# Si el token se invalida por el tiempo, podemos
+# refresacarlo usando el token refresh:
+# El tokenRefresh se manda por el AUTHORIZATION
+POST http://localhost:8080/users/token/refresh
+Content-Type: application/json
+
+# Ver usuario **********************
+GET http://localhost:8080/users/id/1
+
+# -------------------------------------------------------
+# CUSTOMER-SERVICE --------------------------------------
+# Creamos Regiones
+
+POST http://localhost:8080/customers/region
+Content-Type: application/json
+{
+    "name" : "Region1",
+}
+
+# Creamos un Cliente
+
+POST http://localhost:8080/customers
+Content-Type: application/json
+{
+    "dni" : "12345678",
+    "name" : "Omar Miranda",
+    "email" : "comidev.contacto@gmail.com",
+    "photoUrl" : "none",
+    "user" : {
+        "username" : "omar123",
+        "password" : "123",
+    },
+    "region" : {
+        "id" : 1
+    }
+}
+
+# Ver clientes
+GET http://localhost:8080/customers
+
+# Nota: Ahora podemos hacer login con el cliente y usar su token
+# También podemos seguir haciendo el resto con el admin.
+
+# -------------------------------------------------------
+# PRODUCT-SERVICE ---------------------------------------
+# Creamos categorias
+POST http://localhost:8080/products/category
+Content-Type: application/json
+{
+    "name" : "Alimentos"
+}
+
+# Creamos productos
+POST http://localhost:8080/products
+Content-Type: application/json
+{
+    "name" : "Alimento rico",
+    "description" : "Un alimento muy rico",
+    "stock" : 30,
+    "price" : 15.52,
+    "categoryName" : "Alimentos"
+}
+
+# Ver productos
+GET http://localhost:8080/products
+
+# -------------------------------------------------------
+# SHOPPING-SERVICE ---------------------------------------
+# Creamos una compra
+POST http://localhost:8080/invoices
+Content-Type: application/json
+{
+    "description" : "Una compra muy bien realizada :D",
+    "items" : [
+        {
+            "quantity" : 1,
+            "productId" : 1
+        }
+    ],
+    "customerId" : 1
+}
+
+# Ver compras
+GET http://localhost:8080/invoices

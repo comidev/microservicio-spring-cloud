@@ -15,6 +15,7 @@ import comidev.authservice.exception.forbidden.ForbiddenException;
 import comidev.authservice.exception.notFound.NotFoundException;
 import comidev.authservice.jwt.JwtDTO;
 import comidev.authservice.jwt.JwtService;
+import comidev.authservice.role.Role;
 import comidev.authservice.role.RoleName;
 import comidev.authservice.role.RoleRepo;
 import comidev.authservice.security.RouteProtected;
@@ -82,16 +83,23 @@ public class UserService {
         return create(user, RoleName.CLIENTE);
     }
 
-    private User create(UserDTO user, RoleName role) {
+    private User create(UserDTO user, RoleName roleName) {
         String username = user.getUsername();
         if (userRepo.existsByUsername(username)) {
             String message = "Username existente: " + username;
             throw new ConflictException(message);
         }
 
+        // La primera vez se crea los roles
+        Optional<Role> optRoleDB = roleRepo.findByName(roleName);
+        Role roleDB = optRoleDB.isPresent()
+                ? optRoleDB.get()
+                : roleRepo.save(new Role(roleName));
+
         User userDB = User.builder()
                 .username(username)
-                .roles(Set.of(roleRepo.findByName(role)))
+                .roles(Set.of(
+                        roleDB))
                 .password(passwordEncoder.encode(user.getPassword()))
                 .build();
 

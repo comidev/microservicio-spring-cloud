@@ -73,6 +73,10 @@ Maneja las entidades Product y Category, sirve para gestionar a los productos.
 
 ## ENDPOINTS
 
+1. Agrega un usuario admin:
+
+A la ruta:
+
 ### 1. AUTH-SERVICE
 
 Ruta: /users

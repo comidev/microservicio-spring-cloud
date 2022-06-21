@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import comidev.productservice.category.Category;
 import comidev.productservice.category.CategoryRepo;
+import comidev.productservice.exception.badRequest.BadRequestException;
+import comidev.productservice.exception.conflict.FieldAlreadyExistException;
 import comidev.productservice.exception.notFound.NotFoundException;
 import comidev.productservice.util.State;
 
@@ -44,6 +46,18 @@ public class ProductService {
         product.setStatus(State.CREATED);
         product.setCreateAt(new Date());
         return productRepo.save(product);
+    }
+
+    public Category createCategory(String categoryName) {
+        if (categoryName == null || categoryName.isEmpty()) {
+            throw new BadRequestException("El nombre no puede ser nulo!");
+        }
+
+        if (categoryRepo.existsByName(categoryName)) {
+            throw new FieldAlreadyExistException("El nombre ya existe! " + categoryName);
+        }
+
+        return categoryRepo.save(new Category(categoryName));
     }
 
     public Product update(Product product, String id) {
