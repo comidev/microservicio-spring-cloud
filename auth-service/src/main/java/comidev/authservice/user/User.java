@@ -13,29 +13,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 import comidev.authservice.role.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "usuario")
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "el campo no puede ser vacio")
-    @Size(min = 6, message = "minimo 6")
     @Column(unique = true, nullable = false)
     private String username;
 
-    @NotEmpty(message = "el campo no puede ser vacio")
-    @Size(min = 3, message = "minimo 3")
     @Column(nullable = false)
     private String password;
 
@@ -43,7 +41,7 @@ public class UserEntity {
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(referencedColumnName = "id", name = "usuario_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "id", name = "rol_id"))
     private Set<Role> roles;
 
-    public UserEntity() {
+    public User() {
         this.roles = new HashSet<>();
     }
 }

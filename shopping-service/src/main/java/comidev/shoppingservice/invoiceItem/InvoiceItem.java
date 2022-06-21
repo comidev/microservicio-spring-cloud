@@ -23,6 +23,7 @@ public class InvoiceItem {
     private Long id;
     @Positive(message = "debe ser mayor a 0 (cero)")
     private Integer quantity;
+
     @Column(name = "product_id")
     private String productId;
     @Transient

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import comidev.shoppingservice.exception.badRequest.FieldInvalidException;
-import comidev.shoppingservice.utils.MessageError;
+import comidev.shoppingservice.util.MessageError;
 
 @RestController
 @RequestMapping("/invoices")

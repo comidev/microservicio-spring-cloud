@@ -10,16 +10,12 @@ import comidev.shoppingservice.client.customer.Customer;
 import comidev.shoppingservice.client.customer.CustomerClient;
 import comidev.shoppingservice.client.product.Product;
 import comidev.shoppingservice.client.product.ProductClient;
-import comidev.shoppingservice.exception.conflict.FieldAlreadyExistException;
 import comidev.shoppingservice.exception.notFound.NotFoundException;
-// import comidev.shoppingservice.invoiceItem.InvoiceItemRepo;
 import comidev.shoppingservice.invoiceItem.InvoiceItem;
+import comidev.shoppingservice.util.State;
 
 @Service
 public class InvoiceService {
-    private final String CREATED = "CREATED";
-    private final String DELETED = "DELETED";
-
     @Autowired
     private InvoiceRepo invoiceRepo;
     @Autowired
@@ -32,8 +28,7 @@ public class InvoiceService {
     }
 
     public Invoice create(Invoice invoice) {
-        validNumberInvoice(invoice.getNumberInvoice());
-        invoice.setState(CREATED);
+        invoice.setState(State.CREATED);
         Invoice invoiceDB = invoiceRepo.save(invoice);
         invoiceDB.getItems().forEach(item -> {
             productRest.updateStock(item.getProductId(), item.getQuantity() * -1);
@@ -41,18 +36,11 @@ public class InvoiceService {
         return invoiceDB;
     }
 
-    private void validNumberInvoice(String numberInvoice) {
-        if (invoiceRepo.existsByNumberInvoice(numberInvoice)) {
-            String message = "Number invoice ya existe: " + numberInvoice;
-            throw new FieldAlreadyExistException(message);
-        }
-    }
 
     public Invoice update(Invoice invoice, Long id) {
         Invoice invoiceDB = findById(id);
         invoiceDB.setCustomerId(invoice.getCustomerId());
         invoiceDB.setDescription(invoice.getDescription());
-        invoiceDB.setNumberInvoice(invoice.getNumberInvoice());
         invoiceDB.getItems().clear();
         invoiceDB.setItems(invoice.getItems());
         return invoiceRepo.save(invoiceDB);
@@ -60,7 +48,6 @@ public class InvoiceService {
 
     public Invoice getById(Long id) {
         Invoice invoiceDB = findById(id);
-
         Customer customer = customerRest.getById(invoiceDB.getCustomerId());
         invoiceDB.setCustomer(customer);
 
@@ -91,7 +78,7 @@ public class InvoiceService {
 
     public Invoice delete(Long id) {
         Invoice invoiceDB = findById(id);
-        invoiceDB.setState(DELETED);
+        invoiceDB.setState(State.DELETED);
         return invoiceRepo.save(invoiceDB);
     }
 }

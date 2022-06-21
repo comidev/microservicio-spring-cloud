@@ -2,6 +2,7 @@ package comidev.authservice.user;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,10 @@ import comidev.authservice.exception.forbidden.ForbiddenException;
 import comidev.authservice.exception.notFound.NotFoundException;
 import comidev.authservice.jwt.JwtDTO;
 import comidev.authservice.jwt.JwtService;
-import comidev.authservice.role.Role;
+import comidev.authservice.role.RoleName;
 import comidev.authservice.role.RoleRepo;
 import comidev.authservice.security.RouteProtected;
 import comidev.authservice.util.RequestDTO;
-import comidev.authservice.util.UsuarioRol;
 
 @Service
 public class UserService {
@@ -33,22 +33,22 @@ public class UserService {
     @Autowired
     private RouteProtected routeProtected;
 
-    public JwtDTO login(UserRequest userRequest) {
-        String username = userRequest.getUsername();
-        Optional<UserEntity> userEntityOpt = userRepo.findByUsername(username);
+    public JwtDTO login(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        Optional<User> userEntityOpt = userRepo.findByUsername(username);
         if (userEntityOpt.isEmpty()) {
             throw new NotFoundException("Username no encontrado: " + username);
         }
 
-        UserEntity userEntity = userEntityOpt.get();
+        User userEntity = userEntityOpt.get();
 
         String password = userEntity.getPassword();
-        if (!passwordEncoder.matches(userRequest.getPassword(), password)) {
+        if (!passwordEncoder.matches(userDTO.getPassword(), password)) {
             throw new BadRequestException("Password incorrecto");
         }
 
         List<String> roles = userEntity.getRoles().stream()
-                .map(Role::getName)
+                .map(role -> role.getName().toString())
                 .collect(Collectors.toList());
 
         return jwtService.createTokensByUsernameAndRoles(username, roles);
@@ -74,23 +74,28 @@ public class UserService {
         return new JwtDTO(token, null);
     }
 
-    public UserEntity createAdmin(UserEntity user) {
-        return create(user, UsuarioRol.ADMIN.toString());
+    public User createAdmin(UserDTO user) {
+        return create(user, RoleName.ADMIN);
     }
 
-    public UserEntity createCliente(UserEntity user) {
-        return create(user, UsuarioRol.CLIENTE.toString());
+    public User createCliente(UserDTO user) {
+        return create(user, RoleName.CLIENTE);
     }
 
-    private UserEntity create(UserEntity user, String role) {
+    private User create(UserDTO user, RoleName role) {
         String username = user.getUsername();
         if (userRepo.existsByUsername(username)) {
             String message = "Username existente: " + username;
             throw new ConflictException(message);
         }
-        user.getRoles().add(roleRepo.findByName(role));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+
+        User userDB = User.builder()
+                .username(username)
+                .roles(Set.of(roleRepo.findByName(role)))
+                .password(passwordEncoder.encode(user.getPassword()))
+                .build();
+
+        return userRepo.save(userDB);
     }
 
     public void deleteById(Long id) {
@@ -101,14 +106,14 @@ public class UserService {
         userRepo.delete(getByUsername(username));
     }
 
-    public UserEntity getById(Long id) {
+    public User getById(Long id) {
         return userRepo.findById(id).orElseThrow(() -> {
             String message = "Usuario inexistente: " + id;
             return new NotFoundException(message);
         });
     }
 
-    public UserEntity getByUsername(String username) {
+    public User getByUsername(String username) {
         return userRepo.findByUsername(username).orElseThrow(() -> {
             String message = "Username inexistente: " + username;
             return new NotFoundException(message);

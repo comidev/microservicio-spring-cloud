@@ -9,13 +9,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import comidev.customerservice.client.user.User;
 import comidev.customerservice.region.Region;
+import comidev.customerservice.util.State;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,9 +34,6 @@ public class Customer {
     @Column(name = "dni", unique = true, length = 8, nullable = false)
     private String dni;
 
-    @Column(name = "user_id", nullable = true, unique = true)
-    private Long userId;
-
     @NotEmpty(message = "no puede ser vacio")
     @Column(name = "first_name", nullable = false)
     private String name;
@@ -45,16 +43,19 @@ public class Customer {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "photo_url")
+    @Column(name = "photo_url", nullable = true)
     private String photoUrl;
 
-    private String state;
+    private State state;
 
-    @Transient
-    private User user;
+    @Column(name = "user_id", nullable = true, unique = true)
+    private Long userId;
 
-    @NotNull(message = "no puede ser vacio")
+    @NotEmpty(message = "no puede ser vacio")
     @ManyToOne
     @JoinColumn(name = "region_id")
     private Region region;
+
+    @Transient
+    private User user;
 }

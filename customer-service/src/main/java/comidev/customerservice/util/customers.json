@@ -1,0 +1,15 @@
+[
+    {
+        "dni": "70889651",
+        "name": "Omar",
+        "email": "omar@gmail.com",
+        "photoUrl": "none",
+        "user"  : {
+            "username"  : "clientedev",
+            "password" : "123"
+        },
+        "region": {
+            "id": 1
+        }
+    }
+]

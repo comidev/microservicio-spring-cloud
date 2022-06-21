@@ -31,8 +31,13 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public JwtDTO login(@RequestBody UserRequest userRequest) {
-        return userService.login(userRequest);
+    public JwtDTO login(@Valid @RequestBody UserDTO user,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = MessageError.from(bindingResult.getFieldErrors());
+            throw new FieldInvalidException(message);
+        }
+        return userService.login(user);
     }
 
     @PostMapping("/token/refresh")
@@ -44,14 +49,15 @@ public class UserController {
 
     @PostMapping("/token/validate")
     @ResponseStatus(HttpStatus.OK)
-    public JwtDTO tokenIsValid(@RequestParam(name = "token", required = true) String token,
+    public JwtDTO tokenIsValid(
+            @RequestParam(name = "token", required = true) String token,
             @RequestBody RequestDTO requestDTO) {
         return userService.tokenIsValid(token, requestDTO);
     }
 
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserEntity createAdmin(@Valid @RequestBody UserEntity user, BindingResult bindingResult) {
+    public User createAdmin(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = MessageError.from(bindingResult.getFieldErrors());
             throw new FieldInvalidException(message);
@@ -61,7 +67,7 @@ public class UserController {
 
     @PostMapping("/cliente")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserEntity createCliente(@Valid @RequestBody UserEntity user, BindingResult bindingResult) {
+    public User createCliente(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String message = MessageError.from(bindingResult.getFieldErrors());
             throw new FieldInvalidException(message);
@@ -70,26 +76,26 @@ public class UserController {
     }
 
     @DeleteMapping("/id/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) {
         userService.deleteById(id);
     }
 
     @DeleteMapping("/username/{username}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByUsername(@PathVariable String username) {
         userService.deleteByUsername(username);
     }
 
     @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserEntity getById(@PathVariable Long id) {
+    public User getById(@PathVariable Long id) {
         return userService.getById(id);
     }
 
     @GetMapping("/username/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public UserEntity getByUsername(@PathVariable String username) {
+    public User getByUsername(@PathVariable String username) {
         return userService.getByUsername(username);
     }
 }

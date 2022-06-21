@@ -1,15 +1,16 @@
-package comidev.customerservice.client.user;
+package comidev.authservice.user;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private Long id;
+public class UserDTO {
     @NotEmpty(message = "el campo no puede ser vacio")
     @Size(min = 6, message = "minimo 6")
     private String username;

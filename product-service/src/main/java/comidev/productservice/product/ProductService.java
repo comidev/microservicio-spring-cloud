@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import comidev.productservice.category.Category;
 import comidev.productservice.category.CategoryRepo;
 import comidev.productservice.exception.notFound.NotFoundException;
-import comidev.productservice.utils.State;
+import comidev.productservice.util.State;
 
 @Service
 public class ProductService {
@@ -41,7 +41,7 @@ public class ProductService {
     public Product create(Product product) {
         Category category = getCategoryByName(product.getCategoryName());
         product.setCategory(category);
-        product.setStatus(State.CREATED.toString());
+        product.setStatus(State.CREATED);
         product.setCreateAt(new Date());
         return productRepo.save(product);
     }
@@ -72,7 +72,7 @@ public class ProductService {
 
     public Product delete(String id) {
         Product productDB = getById(id);
-        productDB.setStatus(State.DELETED.toString());
+        productDB.setStatus(State.DELETED);
         return productRepo.save(productDB);
     }
 }

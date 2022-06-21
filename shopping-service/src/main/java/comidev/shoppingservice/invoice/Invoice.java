@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import comidev.shoppingservice.client.customer.Customer;
 import comidev.shoppingservice.invoiceItem.InvoiceItem;
+import comidev.shoppingservice.util.State;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,16 +37,11 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "number_invoice", unique = true)
-    private String numberInvoice;
     private String description;
-
-    @Column(name = "customer_id")
-    private Long customerId;
-
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
+    private State state;
 
     @Valid
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -53,11 +49,11 @@ public class Invoice {
     @JoinColumn(name = "invoice_id")
     private List<InvoiceItem> items;
 
-    private String state;
-
+    @Column(name = "customer_id")
+    private Long customerId;
     @Transient
     private Customer customer;
-
+    
     @Transient
     private Float total;
 

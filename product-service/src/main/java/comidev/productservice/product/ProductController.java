@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import comidev.productservice.exception.badRequest.FieldInvalidException;
-import comidev.productservice.utils.MessageError;
+import comidev.productservice.util.MessageError;
 
 @RestController
 @RequestMapping("/products")
@@ -61,7 +60,7 @@ public class ProductController {
         return productService.update(product, id);
     }
 
-    @PatchMapping("/{id}/stock")
+    @PutMapping("/{id}/stock")
     @ResponseStatus(HttpStatus.OK)
     public Product updateStock(@PathVariable String id,
             @RequestParam(name = "quantity", required = true) Integer quantity) {

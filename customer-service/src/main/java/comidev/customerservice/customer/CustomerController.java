@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import comidev.customerservice.exception.badRequest.FieldInvalidException;
-import comidev.customerservice.utils.MessageError;
+import comidev.customerservice.util.MessageError;
 
 @RestController
 @RequestMapping("/customers")

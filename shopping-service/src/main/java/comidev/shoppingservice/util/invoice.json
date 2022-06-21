@@ -1,0 +1,21 @@
+[
+    {
+        "numberInvoice": "15033",
+        "description": "Compra del mejor cliente :D",
+        "customerId": 1,
+        "items": [
+            {
+                "quantity": 2,
+                "productId": "62b09f27c1ca327951ec5889"
+            },
+            {
+                "quantity": 1,
+                "productId": "62b09f96c1ca327951ec588d"
+            },
+            {
+                "quantity": 4,
+                "productId": "62b09fbcc1ca327951ec588e"
+            }
+        ]
+    }
+]

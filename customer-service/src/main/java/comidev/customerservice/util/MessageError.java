@@ -1,4 +1,4 @@
-package comidev.productservice.utils;
+package comidev.customerservice.util;
 
 import java.util.List;
 
