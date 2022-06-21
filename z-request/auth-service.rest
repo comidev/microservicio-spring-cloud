@@ -2,6 +2,7 @@
 # Creamos un user ADMIN
 POST http://localhost:8080/users/admin
 Content-Type: application/json
+
 {
     "username" : "admin",
     "password" : "admin"
@@ -11,10 +12,12 @@ Content-Type: application/json
 # Hacemos un login y guardamos los tokens
 POST http://localhost:8080/users/login
 Content-Type: application/json
+
 {
     "username" : "admin",
     "password" : "admin"
 }
+
 
 # Nota: Debemos colocar el token el AUTHORIZATION
 # Si el token se invalida por el tiempo, podemos
@@ -22,6 +25,8 @@ Content-Type: application/json
 # El tokenRefresh se manda por el AUTHORIZATION
 POST http://localhost:8080/users/token/refresh
 Content-Type: application/json
+Authorization: Bearer <token_refresh>
+
 
 # Ver usuario **********************
 GET http://localhost:8080/users/id/1
@@ -32,6 +37,8 @@ GET http://localhost:8080/users/id/1
 
 POST http://localhost:8080/customers/region
 Content-Type: application/json
+Authorization: Bearer <token_access>
+
 {
     "name" : "Region1",
 }
@@ -40,6 +47,8 @@ Content-Type: application/json
 
 POST http://localhost:8080/customers
 Content-Type: application/json
+Authorization: Bearer <token_access>
+
 {
     "dni" : "12345678",
     "name" : "Omar Miranda",
@@ -56,6 +65,7 @@ Content-Type: application/json
 
 # Ver clientes
 GET http://localhost:8080/customers
+Authorization: Bearer <token_access>
 
 # Nota: Ahora podemos hacer login con el cliente y usar su token
 # También podemos seguir haciendo el resto con el admin.
@@ -65,6 +75,8 @@ GET http://localhost:8080/customers
 # Creamos categorias
 POST http://localhost:8080/products/category
 Content-Type: application/json
+Authorization: Bearer <token_access>
+
 {
     "name" : "Alimentos"
 }
@@ -72,6 +84,8 @@ Content-Type: application/json
 # Creamos productos
 POST http://localhost:8080/products
 Content-Type: application/json
+Authorization: Bearer <token_access>
+
 {
     "name" : "Alimento rico",
     "description" : "Un alimento muy rico",
@@ -82,12 +96,15 @@ Content-Type: application/json
 
 # Ver productos
 GET http://localhost:8080/products
+Authorization: Bearer <token_access>
 
 # -------------------------------------------------------
 # SHOPPING-SERVICE ---------------------------------------
 # Creamos una compra
 POST http://localhost:8080/invoices
 Content-Type: application/json
+Authorization: Bearer <token_access>
+
 {
     "description" : "Una compra muy bien realizada :D",
     "items" : [
@@ -101,3 +118,4 @@ Content-Type: application/json
 
 # Ver compras
 GET http://localhost:8080/invoices
+Authorization: Bearer <token_access>

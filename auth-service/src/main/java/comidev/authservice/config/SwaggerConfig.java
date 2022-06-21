@@ -1,4 +1,4 @@
-package comidev.gatewayservice.config;
+package comidev.authservice.config;
 
 import java.util.Collections;
 
