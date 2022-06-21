@@ -1,4 +1,4 @@
-package comidev.authservice.config;
+package comidev.customerservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
